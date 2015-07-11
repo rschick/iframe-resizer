@@ -118,16 +118,6 @@
 			syncResize(resize,messageData,'resetPage');
 		}
 
-		function closeIFrame(iframe){
-			var iframeId = iframe.id;
-
-			log(' Removing iFrame: '+iframeId);
-			iframe.parentNode.removeChild(iframe);
-			settings[iframeId].closedCallback(iframeId);
-			delete settings[iframeId];
-			log(' --');
-		}
-
 		function processMsg(){
 			var data = msg.substr(msgIdLen).split(':');
 
@@ -598,6 +588,16 @@
 		},66);
 	}
 
+	function closeIFrame(iframe){
+		var iframeId = iframe.id;
+
+		log(' Removing iFrame: '+iframeId);
+		iframe.parentNode.removeChild(iframe);
+		settings[iframeId].closedCallback(iframeId);
+		delete settings[iframeId];
+		log(' --');
+	}
+
 	function factory(){
 		function init(element, options){
 			if(!element.tagName) {
@@ -627,6 +627,10 @@
 			default:
 				throw new TypeError('Unexpected data type ('+typeof(target)+').');
 			}
+
+			return {
+				close: closeIFrame
+			};
 		};
 	}
 
